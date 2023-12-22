@@ -6,14 +6,7 @@ GeyserMaker:
 		moveq	#0,d0
 		move.b	obRoutine(a0),d0
 		move.w	GMake_Index(pc,d0.w),d1
-	if FixBugs
-		; Deletion has been changed to eliminate potential
-		; double-delete and display-and-delete bugs.
 		jmp	GMake_Index(pc,d1.w)
-	else
-		jsr	GMake_Index(pc,d1.w)
-		bra.w	Geyser_ChkDel
-	endif
 ; ===========================================================================
 GMake_Index:	dc.w GMake_Main-GMake_Index
 		dc.w GMake_Wait-GMake_Index
@@ -51,11 +44,7 @@ GMake_Wait:	; Routine 2
 		addq.b	#2,obRoutine(a0) ; if Sonic is within range, goto GMake_ChkType
 
 .cancel:
-	if FixBugs
-		; Deletion has been changed to eliminate potential
-		; double-delete and display-and-delete bugs.
 		out_of_range.w	DeleteObject
-	endif
 		rts
 ; ===========================================================================
 
@@ -88,20 +77,12 @@ GMake_ChkType:	; Routine 4
 		tst.b	obSubtype(a0)	; is object type 00 (geyser) ?
 		beq.s	GMake_Display	; if yes, branch
 		addq.b	#2,obRoutine(a0)
-	if FixBugs
-		; Deletion has been changed to eliminate potential
-		; double-delete and display-and-delete bugs.
 		out_of_range.w	DeleteObject
-	endif
 		rts
 ; ===========================================================================
 
 GMake_Display:	; Routine 8
-	if FixBugs
-		; Deletion has been changed to eliminate potential
-		; double-delete and display-and-delete bugs.
 		out_of_range.w	DeleteObject
-	endif
 		lea	Ani_Geyser(pc),a1
 		bsr.w	AnimateSprite
 		bra.w	DisplaySprite
@@ -112,11 +93,7 @@ GMake_Delete:	; Routine $A
 		move.b	#2,obRoutine(a0)
 		tst.b	obSubtype(a0)
 		beq.w	DeleteObject
-	if FixBugs
-		; Deletion has been changed to eliminate potential
-		; double-delete and display-and-delete bugs.
 		out_of_range.w	DeleteObject
-	endif
 		rts
 
 
@@ -128,14 +105,7 @@ LavaGeyser:
 		moveq	#0,d0
 		move.b	obRoutine(a0),d0
 		move.w	Geyser_Index(pc,d0.w),d1
-	if FixBugs
-		; The call to DisplaySprite has been moved to prevent a
-		; display-and-delete bug.
 		jmp	Geyser_Index(pc,d1.w)
-	else
-		jsr	Geyser_Index(pc,d1.w)
-		bra.w	DisplaySprite
-	endif
 ; ===========================================================================
 Geyser_Index:	dc.w Geyser_Main-Geyser_Index
 		dc.w Geyser_Action-Geyser_Index
@@ -224,12 +194,7 @@ Geyser_Action:	; Routine 2
 
 Geyser_ChkDel:
 		out_of_range.w	DeleteObject
-	if FixBugs
-		; Moved to prevent a delete-and-display bug.
 		bra.w	DisplaySprite
-	else
-		rts
-	endif
 ; ===========================================================================
 Geyser_Types:	dc.w Geyser_Type00-Geyser_Types
 		dc.w Geyser_Type01-Geyser_Types
