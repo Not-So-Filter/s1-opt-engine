@@ -339,8 +339,7 @@ zFMBusyWait:    rsttarget
 ; zsub_10
 zWriteFMIorII:    rsttarget
 	bit	2,(ix+zTrack.VoiceControl)
-	jr	z,zWriteFMI
-	jp	zWriteFMII
+	jr	nz,zWriteFMII
 ; End of function zWriteFMIorII
 
 ; ||||||||||||||| S U B R O U T I N E |||||||||||||||||||||||||||||||||||||||
