@@ -318,7 +318,7 @@ GameInit:
 MainGameLoop:
 		moveq	#0,d0
 		move.b	(v_gamemode).w,d0 ; load Game Mode
-		movea.l	GameModeArray(pc,d0.w),a0 ; jump to apt location in ROM
+		movea.w	GameModeArray(pc,d0.w),a0 ; jump to apt location in ROM
 		jsr	(a0) ; jump to apt location in ROM
 		bra.s	MainGameLoop	; loop indefinitely
 ; ===========================================================================
@@ -328,21 +328,21 @@ MainGameLoop:
 
 GameModeArray:
 
-ptr_GM_Sega:	dc.l	GM_Sega		; Sega Screen ($00)
+ptr_GM_Sega:	dc.w	GM_Sega		; Sega Screen ($00)
 
-ptr_GM_Title:	dc.l	GM_Title	; Title	Screen ($04)
+ptr_GM_Title:	dc.w	GM_Title	; Title	Screen ($02)
 
-ptr_GM_Demo:	dc.l	GM_Level	; Demo Mode ($08)
+ptr_GM_Demo:	dc.w	GM_Level	; Demo Mode ($04)
 
-ptr_GM_Level:	dc.l	GM_Level	; Normal Level ($0C)
+ptr_GM_Level:	dc.w	GM_Level	; Normal Level ($06)
 
-ptr_GM_Special:	dc.l	GM_Special	; Special Stage	($10)
+ptr_GM_Special:	dc.w	GM_Special	; Special Stage	($08)
 
-ptr_GM_Cont:	dc.l	GM_Continue	; Continue Screen ($14)
+ptr_GM_Cont:	dc.w	GM_Continue	; Continue Screen ($0A)
 
-ptr_GM_Ending:	dc.l	GM_Ending	; End of game sequence ($18)
+ptr_GM_Ending:	dc.w	GM_Ending	; End of game sequence ($0C)
 
-ptr_GM_Credits:	dc.l	GM_Credits	; Credits ($1C)
+ptr_GM_Credits:	dc.w	GM_Credits	; Credits ($0E)
 
 ; ===========================================================================
 

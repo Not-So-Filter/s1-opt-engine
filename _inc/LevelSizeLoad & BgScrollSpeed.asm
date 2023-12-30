@@ -104,10 +104,10 @@ LevSz_StartLoc:
 		lea	EndingStLocArray(pc,d0.w),a1 ; load Sonic's start location
 
 LevSz_SonicPos:
-;		moveq	#0,d1
+		moveq	#0,d1
 		move.w	(a1)+,d1
 		move.w	d1,(v_player+obX).w ; set Sonic's position on x-axis
-;		moveq	#0,d0
+		moveq	#0,d0
 		move.w	(a1),d0
 		move.w	d0,(v_player+obY).w ; set Sonic's position on y-axis
 		cmpi.b	#id_Title,(v_gamemode).w		; MJ: is screen mode at title?

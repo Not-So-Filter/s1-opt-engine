@@ -81,16 +81,10 @@ Bas_Action:	; Routine 2
 
 .chkdel:
 		tst.b	obRender(a0)
-	if FixBugs
-		; Objects shouldn't call DisplaySprite and DeleteObject on
-		; the same frame or else cause a null-pointer dereference.
 		bmi.s	.return
 		addq.l	#4,sp
 		bra.w	DeleteObject
 .return:
-	else
-		bpl.w	DeleteObject
-	endif
 		rts
 ; ===========================================================================
 

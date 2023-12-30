@@ -8,7 +8,7 @@
 DeformLayers:
 		tst.b	(f_nobgscroll).w
 		beq.s	.bgscroll
-		rts	
+		rts
 ; ===========================================================================
 
 	.bgscroll:
@@ -178,7 +178,7 @@ Deform_LZ:
 		add.w	(v_screenposy).w,d3
 		andi.w	#$FF,d3
 		lea	(v_hscrolltablebuffer).w,a1
-		move.w	#$DF,d1
+		move.w	#223,d1
 		move.w	(v_screenposx).w,d0
 		neg.w	d0
 		move.w	d0,d6
@@ -307,10 +307,11 @@ Deform_MZ:
 
 		move.w	(v_bg3screenposx).w,d0
 		neg.w	d0
-		moveq	#1,d1
-	.mountainLoop:
+;		moveq	#1,d1
+;	.mountainLoop:
 		move.w	d0,(a1)+
-		dbf	d1,.mountainLoop
+		move.w	d0,(a1)+
+;		dbf	d1,.mountainLoop
 
 		move.w	(v_bg2screenposx).w,d0
 		neg.w	d0

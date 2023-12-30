@@ -599,10 +599,10 @@ TempoWait:
 	; overflows, it will update.  So a tempo of 80h will update every other
 	; frame, or 30 times a second.
 
-	ld	ix,zAbsVar			; ix points to zComRange
 	ld	a,(zAbsVar.CurrentTempo)	; tempo value (save 6 cycles here)
-	add	a,(ix+zVar.TempoTimeout)	; Adds previous value to
-	ld	(zAbsVar.TempoTimeout),a	; Store this as new (save 6 cycles here)
+	ld	hl,zAbsVar.TempoTimeout		; ix points to zComRange (save 4 cycles here)
+	add	a,(hl)	; Adds previous value to (save 12 cycles here)
+	ld	(hl),a	; Store this as new (save 12 cycles here)
 	ret	c				; If addition overflowed (answer greater than FFh), return
 
 	; So if adding tempo value did NOT overflow, then we add 1 to all durations
