@@ -31,7 +31,7 @@ Scen_Main:	; Routine 0
 
 Scen_ChkDel:	; Routine 2
 		tst.b	obRender(a0)
-		bpl.w	DeleteObject
+		beq.w	DeleteObject
 		bra.w	DisplaySprite
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
