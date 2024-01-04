@@ -3,7 +3,7 @@ Sonic 1 Optimized Engine
 This project aims to optimize the original Sonic The Hedgehog game for the Sega Mega Drive to the full potential while fixing bugs and adding additional improvements.
 
 To-Do List:
-Fix animated scattered rings
+Fix rings in Marble Zone Act 1 not collecting
 
 Credits:
 Filter (Project Lead, Main Programmer)

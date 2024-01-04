@@ -6,14 +6,11 @@
 
 
 SpeedToPos:
-		move.w	obVelX(a0),d0	; load horizontal speed
-		ext.l	d0
+		movem.w	obVelX(a0),d0/d2	; load horizontal speed
 		lsl.l	#8,d0		; multiply speed by $100
 		add.l	d0,obX(a0)	; add to x-axis	position
-		move.w	obVelY(a0),d0	; load vertical	speed
-		ext.l	d0
-		lsl.l	#8,d0		; multiply by $100
-		add.l	d0,obY(a0)	; add to y-axis	position
+		lsl.l	#8,d2		; multiply by $100
+		add.l	d2,obY(a0)	; add to y-axis	position
 		rts
 
 ; End of function SpeedToPos

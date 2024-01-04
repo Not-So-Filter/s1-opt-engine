@@ -2839,10 +2839,10 @@ Sync3:
 		beq.s	SyncEnd
 		moveq	#0,d0
 		move.b	(v_ani3_time).w,d0
-		add.b	(v_ani3_buf).w,d0
-		move.b	d0,(v_ani3_buf).w
-		rol.b	#7,d0
-		andi.b	#3,d0
+		add.w	(v_ani3_buf).w,d0
+		move.w	d0,(v_ani3_buf).w
+		rol.w	#7,d0
+		andi.w	#3,d0
 		move.b	d0,(v_ani3_frame).w
 		subq.b	#1,(v_ani3_time).w
 
@@ -6024,12 +6024,16 @@ OPL_Main:
 		move.l	a1,(v_opl_data+$C).w
 		lea	(v_objstate).w,a2
 		move.w	#$101,(a2)+
-		moveq	#0,d1
-		moveq	#$5E,d0
+		moveq	#(v_objstate_end-v_objstate-2)/4-1,d0
 
 OPL_ClrList:
-		move.l	d1,(a2)+
+		clr.l	(a2)+
 		dbf	d0,OPL_ClrList	; clear	pre-destroyed object list
+		
+		; Clear the last word, since the above loop only does longwords.
+	if (v_objstate_end-v_objstate-2)&2
+		clr.w	(a2)+
+	endif
 
 		lea	(v_objstate).w,a2
 		moveq	#0,d2
@@ -7055,14 +7059,11 @@ locret_178A2:
 
 
 BossMove:
-		move.w	obVelX(a0),d0
-		ext.l	d0
+		movem.w	obVelX(a0),d0/d2
 		lsl.l	#8,d0
 		add.l	d0,objoff_30(a0)
-		move.w	obVelY(a0),d0
-		ext.l	d0
-		lsl.l	#8,d0
-		add.l	d0,objoff_38(a0)
+		lsl.l	#8,d2
+		add.l	d2,objoff_38(a0)
 		rts
 ; End of function BossMove
 

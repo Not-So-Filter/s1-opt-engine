@@ -109,7 +109,6 @@ loc_9C0E:
 Ring_Animate:	; Routine 2
 		move.b	(v_ani1_frame).w,obFrame(a0) ; set frame
 		out_of_range.s	Ring_Delete,objoff_32(a0)
-.display:
 		bra.w	DisplaySprite
 ; ===========================================================================
 
@@ -127,7 +126,7 @@ Ring_Collect:	; Routine 4
 Ring_Sparkle:	; Routine 6
 		lea	Ani_Ring(pc),a1
 		bsr.w	AnimateSprite
-		bra.s	Ring_Animate.display
+		bra.w	DisplaySprite
 ; ===========================================================================
 
 Ring_Delete:	; Routine 8
@@ -138,7 +137,7 @@ Ring_Delete:	; Routine 8
 
 CollectRing:
 		addq.w	#1,(v_rings).w	; add 1 to rings
-		addq.b	#1,(f_ringcount).w ; update the rings counter
+		ori.b	#1,(f_ringcount).w ; update the rings counter
 		moveq	#sfx_Ring,d0	; play ring sound
 		cmpi.w	#100,(v_rings).w ; do you have < 100 rings?
 		blo.s	.playsnd	; if yes, branch
@@ -199,8 +198,9 @@ RLoss_Count:	; Routine 0
 .makerings:
 		move.b	#id_RingLoss,obID(a1) ; load bouncing ring object
 		addq.b	#2,obRoutine(a1)
-		move.b	#8,obHeight(a1)
-		move.b	#8,obWidth(a1)
+		moveq	#8,d0
+		move.b	d0,obHeight(a1)
+		move.b	d0,obWidth(a1)
 		move.w	obX(a0),obX(a1)
 		move.w	obY(a0),obY(a1)
 		move.l	#Map_Ring,obMap(a1)
@@ -208,7 +208,7 @@ RLoss_Count:	; Routine 0
 		move.b	#4,obRender(a1)
 		move.w	#$80*3,obPriority(a1)
 		move.b	#$47,obColType(a1)
-		move.b	#8,obActWid(a1)
+		move.b	d0,obActWid(a1)
 		st.b	(v_ani3_time).w
 		tst.w	d4
 		bmi.s	.loc_9D62
@@ -234,10 +234,9 @@ RLoss_Count:	; Routine 0
 		dbf	d5,.loop	; repeat for number of rings (max 31)
 
 .resetcounter:
-		moveq	#0,d0
-		move.w	d0,(v_rings).w	; reset number of rings to zero
+		move.w	#0,(v_rings).w	; reset number of rings to zero
 		move.b	#$80,(f_ringcount).w ; update ring counter
-		move.b	d0,(v_lifecount).w
+		move.b	#0,(v_lifecount).w
 		moveq	#sfx_RingLoss,d0
 		jsr	(PlaySound_Special).w	; play ring loss sound
 
@@ -266,7 +265,7 @@ RLoss_Bounce:	; Routine 2
 		addi.w	#$E0,d0
 		cmp.w	obY(a0),d0	; has object moved below level boundary?
 		blo.s	RLoss_Delete	; if yes, branch
-		bra.s	RLoss_Sparkle.display
+		bra.w	DisplaySprite
 ; ===========================================================================
 
 RLoss_Collect:	; Routine 4
@@ -278,7 +277,6 @@ RLoss_Collect:	; Routine 4
 RLoss_Sparkle:	; Routine 6
 		lea	Ani_Ring(pc),a1
 		bsr.w	AnimateSprite
-.display:
 		bra.w	DisplaySprite
 ; ===========================================================================
 

@@ -291,11 +291,10 @@ v_pal_water	ds.b $80	; main underwater palette ($80 bytes)
 v_pal_dry	ds.b $80	; main palette ($80 bytes)
 v_pal_dry_dup	ds.b $80	; duplicate palette, used for transitions ($80 bytes)
 	ds.b $80	; free space
-v_objstate	ds.b $200	; object state list ($200 bytes)
-v_regbuffer	= v_objstate	; stores registers d0-a7 during an error event ($40 bytes)
-v_spbuffer	= v_objstate+$40	; stores most recent sp address (4 bytes)
-v_errortype	= v_objstate+$44	; error type
+v_objstate	ds.b $C0	; object state list ($C0 bytes)
+v_objstate_end
 
+		ds.b $140		; stack
 v_systemstack	ds.w 1
 f_restart	ds.b 1	; restart level flag (1 byte)
 v_hud		ds.b 1	; flag for the HUD (1 byte)
