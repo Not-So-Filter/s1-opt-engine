@@ -28,14 +28,14 @@ MDemo_On:
 .notspecial:
 		add.w	d0,d0
 		add.w	d0,d0
-		movea.l	DemoDataPtr(pc,d0.w),a1	; fetch address for demo data
+		movea.w	DemoDataPtr(pc,d0.w),a1	; fetch address for demo data
 		tst.w	(f_demo).w	; is this an ending sequence demo?
 		bpl.s	.notcredits	; if not, branch
 		move.w	(v_creditsnum).w,d0
 		subq.w	#1,d0
 		add.w	d0,d0
 		add.w	d0,d0
-		movea.l	DemoEndDataPtr(pc,d0.w),a1	; fetch address for credits demo
+		movea.w	DemoEndDataPtr(pc,d0.w),a1	; fetch address for credits demo
 
 .notcredits:
 		move.w	(v_btnpushtime1).w,d0
@@ -61,23 +61,23 @@ MDemo_On:
 ; ---------------------------------------------------------------------------
 ; Demo sequence	pointers
 ; ---------------------------------------------------------------------------
-DemoDataPtr:	dc.l Demo_GHZ		; demos run after the title screen
-		dc.l Demo_GHZ
-		dc.l Demo_MZ
-		dc.l Demo_MZ
-		dc.l Demo_SYZ
-		dc.l Demo_SYZ
-		dc.l Demo_SS
-		dc.l Demo_SS
+DemoDataPtr:	dc.w Demo_GHZ		; demos run after the title screen
+		dc.w Demo_GHZ
+		dc.w Demo_MZ
+		dc.w Demo_MZ
+		dc.w Demo_SYZ
+		dc.w Demo_SYZ
+		dc.w Demo_SS
+		dc.w Demo_SS
 
-DemoEndDataPtr:	dc.l Demo_EndGHZ1	; demos run during the credits
-		dc.l Demo_EndMZ
-		dc.l Demo_EndSYZ
-		dc.l Demo_EndLZ
-		dc.l Demo_EndSLZ
-		dc.l Demo_EndSBZ1
-		dc.l Demo_EndSBZ2
-		dc.l Demo_EndGHZ2
+DemoEndDataPtr:	dc.w Demo_EndGHZ1	; demos run during the credits
+		dc.w Demo_EndMZ
+		dc.w Demo_EndSYZ
+		dc.w Demo_EndLZ
+		dc.w Demo_EndSLZ
+		dc.w Demo_EndSBZ1
+		dc.w Demo_EndSBZ2
+		dc.w Demo_EndGHZ2
 
 		dc.b 0,	$8B, 8,	$37, 0,	$42, 8,	$5C, 0,	$6A, 8,	$5F, 0,	$2F, 8,	$2C
 		dc.b 0,	$21, 8,	3, $28,	$30, 8,	8, 0, $2E, 8, $15, 0, $F, 8, $46

@@ -137,7 +137,7 @@ Ring_Delete:	; Routine 8
 
 CollectRing:
 		addq.w	#1,(v_rings).w	; add 1 to rings
-		ori.b	#1,(f_ringcount).w ; update the rings counter
+		st.b	(f_ringcount).w ; update the rings counter
 		moveq	#sfx_Ring,d0	; play ring sound
 		cmpi.w	#100,(v_rings).w ; do you have < 100 rings?
 		blo.s	.playsnd	; if yes, branch
@@ -234,9 +234,10 @@ RLoss_Count:	; Routine 0
 		dbf	d5,.loop	; repeat for number of rings (max 31)
 
 .resetcounter:
-		move.w	#0,(v_rings).w	; reset number of rings to zero
-		move.b	#$80,(f_ringcount).w ; update ring counter
-		move.b	#0,(v_lifecount).w
+		moveq	#0,d0
+		move.w	d0,(v_rings).w	; reset number of rings to zero
+		st.b	(f_ringcount).w ; update ring counter
+		move.b	d0,(v_lifecount).w
 		moveq	#sfx_RingLoss,d0
 		jsr	(PlaySound_Special).w	; play ring loss sound
 

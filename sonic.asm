@@ -2620,7 +2620,7 @@ Level_SkipClr:
 		move.b	(v_zone).w,d0
 		add.w	d0,d0
 		add.w	d0,d0
-		movea.l	(a1,d0.w),a1
+		movea.w	(a1,d0.w),a1
 		tst.w	(f_demo).w	; is demo mode on?
 		bpl.s	Level_Demo	; if yes, branch
 		lea	DemoEndDataPtr(pc),a1 ; load ending demo data
@@ -2628,7 +2628,7 @@ Level_SkipClr:
 		subq.w	#1,d0
 		add.w	d0,d0
 		add.w	d0,d0
-		movea.l	(a1,d0.w),a1
+		movea.w	(a1,d0.w),a1
 
 Level_Demo:
 		move.b	1(a1),(v_btnpushtime2).w ; load key press duration
