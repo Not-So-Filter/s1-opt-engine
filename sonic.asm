@@ -985,20 +985,11 @@ loc_16E2:
 		move.l	6(a0),(a0)+
 		dbf	d0,loc_16E2
 
-	if FixBugs
-		; The above code does not properly 'pop' the 16th PLC entry.
-		; Because of this, occupying the 16th slot will cause it to
-		; be repeatedly decompressed infinitely.
-		; Granted, this could be conisdered more of an optimisation
-		; than a bug: treating the 16th entry as a dummy that
-		; should never be occupied makes this code unnecessary.
-		; Still, the overhead of this code is minimal.
 	if (v_plc_buffer_only_end-v_plc_buffer-6)&2
 		move.w	6(a0),(a0)
 	endif
 
 		clr.l	(v_plc_buffer_only_end-6).w
-	endif
 
 		rts
 ; End of function ProcessDPLC2
@@ -2619,14 +2610,12 @@ Level_SkipClr:
 		moveq	#0,d0
 		move.b	(v_zone).w,d0
 		add.w	d0,d0
-		add.w	d0,d0
 		movea.w	(a1,d0.w),a1
 		tst.w	(f_demo).w	; is demo mode on?
 		bpl.s	Level_Demo	; if yes, branch
 		lea	DemoEndDataPtr(pc),a1 ; load ending demo data
 		move.w	(v_creditsnum).w,d0
 		subq.w	#1,d0
-		add.w	d0,d0
 		add.w	d0,d0
 		movea.w	(a1,d0.w),a1
 

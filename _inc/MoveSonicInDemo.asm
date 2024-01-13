@@ -27,13 +27,11 @@ MDemo_On:
 
 .notspecial:
 		add.w	d0,d0
-		add.w	d0,d0
 		movea.w	DemoDataPtr(pc,d0.w),a1	; fetch address for demo data
 		tst.w	(f_demo).w	; is this an ending sequence demo?
 		bpl.s	.notcredits	; if not, branch
 		move.w	(v_creditsnum).w,d0
 		subq.w	#1,d0
-		add.w	d0,d0
 		add.w	d0,d0
 		movea.w	DemoEndDataPtr(pc,d0.w),a1	; fetch address for credits demo
 
