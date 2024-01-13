@@ -6,13 +6,7 @@ BossFire:
 		moveq	#0,d0
 		move.b	obRoutine(a0),d0
 		move.w	BossFire_Index(pc,d0.w),d0
-	if FixBugs
-		; DisplaySprite has been moved to avoid a display-after-free bug.
 		jmp	BossFire_Index(pc,d0.w)
-	else
-		jsr	BossFire_Index(pc,d0.w)
-		jmp	(DisplaySprite).l
-	endif
 ; ===========================================================================
 BossFire_Index:	dc.w BossFire_Main-BossFire_Index
 		dc.w BossFire_Action-BossFire_Index
@@ -52,12 +46,7 @@ BossFire_Action:	; Routine 2
 		jsr	(AnimateSprite).l
 		cmpi.w	#boss_mz_y+$D8,obY(a0)
 		bhi.s	BossFire_Delete
-	if FixBugs
-		; DisplaySprite has been moved to avoid a display-after-free bug.
 		jmp	(DisplaySprite).l
-	else
-		rts
-	endif
 ; ===========================================================================
 
 BossFire_Delete:
@@ -194,11 +183,7 @@ locret_1887E:
 ; ===========================================================================
 
 BossFire_Delete2:
-	if FixBugs
-		; Do not return to BossFire_Action, to avoid double-delete
-		; and display-and-delete bugs.
 		addq.l	#4,sp
-	endif
 		bra.s	Obj7A_Delete
 ; ===========================================================================
 
@@ -212,13 +197,8 @@ loc_18886:	; Routine 4
 
 BossFire_Animate:
 		lea	(Ani_Fire).l,a1
-	if FixBugs
-		; DisplaySprite has been moved to avoid a display-after-free bug.
 		jsr	(AnimateSprite).l
 		jmp	(DisplaySprite).l
-	else
-		jmp	(AnimateSprite).l
-	endif
 ; ===========================================================================
 
 BossFire_Delete3:	; Routine 6

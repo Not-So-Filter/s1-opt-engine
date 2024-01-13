@@ -6,12 +6,7 @@ LavaBall:
 		moveq	#0,d0
 		move.b	obRoutine(a0),d0
 		move.w	LBall_Index(pc,d0.w),d1
-	if FixBugs
 		jmp	LBall_Index(pc,d1.w)
-	else
-		jsr	LBall_Index(pc,d1.w)
-		bra.w	DisplaySprite
-	endif
 ; ===========================================================================
 LBall_Index:	dc.w LBall_Main-LBall_Index
 		dc.w LBall_Action-LBall_Index
@@ -70,11 +65,7 @@ LBall_Action:	; Routine 2
 
 LBall_ChkDel:
 		out_of_range.w	DeleteObject
-	if FixBugs
 		bra.w	DisplaySprite
-	else
-		rts
-	endif
 ; ===========================================================================
 LBall_TypeIndex:dc.w LBall_Type00-LBall_TypeIndex, LBall_Type00-LBall_TypeIndex
 		dc.w LBall_Type00-LBall_TypeIndex, LBall_Type00-LBall_TypeIndex

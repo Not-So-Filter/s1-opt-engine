@@ -292,22 +292,12 @@ HurtSonic:
 		move.w	#0,obInertia(a0)
 		move.b	#id_Hurt,obAnim(a0)
 		move.b	#120,flashtime(a0)	; set temp invincible time to 2 seconds
-	if FixBugs
 		moveq	#sfx_HitSpikes,d0
 		cmpi.b	#id_Spikes,obID(a2)	; was damage caused by spikes?
 		beq.s	.sound
 		cmpi.b	#id_Harpoon,obID(a2)	; was damage caused by LZ harpoon?
 		beq.s	.sound
 		moveq	#sfx_Death,d0
-	else
-		; This is bugged: the harpoon will never play the spike sound!
-		move.w	#sfx_Death,d0
-		cmpi.b	#id_Spikes,obID(a2)	; was damage caused by spikes?
-		bne.s	.sound
-		cmpi.b	#id_Harpoon,obID(a2)	; was damage caused by LZ harpoon?
-		bne.s	.sound
-		move.w	#sfx_HitSpikes,d0
-	endif
 
 .sound:
 		jsr	(PlaySound_Special).w
@@ -343,20 +333,12 @@ KillSonic:
 		move.w	obY(a0),objoff_38(a0)
 		move.b	#id_Death,obAnim(a0)
 		bset	#7,obGfx(a0)
-	if FixBugs
 		moveq	#sfx_HitSpikes,d0 ; play spikes death sound
 		cmpi.b	#id_Spikes,obID(a2)	; check	if you were killed by spikes
 		beq.s	.sound
 		cmpi.b	#id_Harpoon,obID(a2)	; check	if you were killed by a harpoon
 		beq.s	.sound
 		moveq	#sfx_Death,d0	; play normal death sound
-	else
-		; This fails to check for the harpoon object.
-		move.w	#sfx_Death,d0	; play normal death sound
-		cmpi.b	#id_Spikes,obID(a2)	; check	if you were killed by spikes
-		bne.s	.sound
-		move.w	#sfx_HitSpikes,d0 ; play spikes death sound
-	endif
 
 .sound:
 		jsr	(PlaySound_Special).w

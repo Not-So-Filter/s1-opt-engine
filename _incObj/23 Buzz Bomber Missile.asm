@@ -38,16 +38,7 @@ Msl_Main:	; Routine 0
 
 Msl_Animate:	; Routine 2
 		bsr.s	Msl_ChkCancel
-	if FixBugs
-		; Msl_ChkCancel can call DeleteObject, so we shouldn't queue
-		; this object for display or update the animation state.
-		; Failing to account for this results in a null pointer
-		; dereference, which is harmless in Sonic 1 but will crash
-		; Sonic 2. Fun fact: Sonic 2 REV00 has some leftover debug
-		; code in its BuildSprites function for detecting this type
-		; of bug.
 		beq.s	Msl_ChkCancel.return
-	endif
 		bra.s	Msl_Animate2
 
 ; ---------------------------------------------------------------------------
@@ -60,17 +51,11 @@ Msl_Animate:	; Routine 2
 Msl_ChkCancel:
 		movea.l	msl_parent(a0),a1
 		cmpi.b	#id_ExplosionItem,obID(a1) ; has Buzz Bomber been destroyed?
-	if FixBugs
-		; This adds a return value so that we know if the object has
-		; been freed.
 		bne.s	.return
 		bsr.s	Msl_Delete
 		moveq	#0,d0
 
 .return:
-	else
-		beq.s	Msl_Delete	; if yes, branch
-	endif
 		rts
 ; End of function Msl_ChkCancel
 
@@ -80,25 +65,11 @@ Msl_FromBuzz:	; Routine 4
 		move.b	#$87,obColType(a0)
 		move.b	#1,obAnim(a0)
 		bsr.w	SpeedToPos
-
-	if ~~FixBugs
-		; Object should not call DisplaySprite and DeleteObject on
-		; the same frame, or else cause a null-pointer dereference.
-		lea	(Ani_Missile).l,a1
-		bsr.w	AnimateSprite
-		bsr.w	DisplaySprite
-	endif
-
 		move.w	(v_limitbtm2).w,d0
 		addi.w	#$E0,d0
 		cmp.w	obY(a0),d0	; has object moved below the level boundary?
 		blo.s	Msl_Delete	; if yes, branch
-
-	if FixBugs
 		bra.s	Msl_Animate2
-	else
-		rts
-	endif
 ; ===========================================================================
 
 Msl_Delete:	; Routine 6

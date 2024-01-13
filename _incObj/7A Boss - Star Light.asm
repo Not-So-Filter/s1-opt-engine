@@ -58,18 +58,10 @@ Obj7A_LoadBoss:
 		dbf	d1,Obj7A_Loop	; repeat sequence 3 more times
 
 loc_1895C:
-	if FixBugs
 		lea	(v_lvlobjspace).w,a1
-	else
-		lea	(v_objspace+object_size*1).w,a1 ; Nonsensical starting point, since dynamic object allocations begin at v_lvlobjspace.
-	endif
 		lea	objoff_2A(a0),a2
 		moveq	#id_Seesaw,d0
-	if FixBugs
 		moveq	#(v_lvlobjend-v_lvlobjspace)/object_size-1,d1
-	else
-		moveq	#(v_objend-(v_objspace+object_size*1))/object_size/2-1,d1	; Nonsensical length, it only covers the first half of object RAM.
-	endif
 
 loc_18968:
 		cmp.b	obID(a1),d0
@@ -230,13 +222,8 @@ Obj7A_MakeBall:
 		lea	objoff_2A(a0),a1
 		move.w	(a1,d0.w),d0
 		movea.l	d0,a2
-	if FixBugs
 		lea	(v_lvlobjspace).w,a1
 		moveq	#(v_lvlobjend-v_lvlobjspace)/object_size-1,d1
-	else
-		lea	(v_objspace+object_size*1).w,a1 ; Nonsensical starting point, since dynamic object allocations begin at v_lvlobjspace.
-		moveq	#(v_objend-(v_objspace+object_size*1))/object_size/2-1,d1	; Nonsensical length, it only covers the first half of object RAM.
-	endif
 
 loc_18AFA:
 		cmp.l	objoff_3C(a1),d0

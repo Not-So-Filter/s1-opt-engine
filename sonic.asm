@@ -24,8 +24,6 @@ AddressSRAM	  = 3	; 0 = odd+even; 2 = even only; 3 = odd only
 
 ZoneCount	  = 6	; discrete zones are: GHZ, MZ, SYZ, LZ, SLZ, and SBZ
 
-FixBugs		  = 1	; change to 1 to enable bugfixes
-
 OptionalEngineImprovements	= 1 ; change this to 1 if you want a smoother experience
 
 ; ===========================================================================

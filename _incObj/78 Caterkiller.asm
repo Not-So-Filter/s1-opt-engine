@@ -309,21 +309,17 @@ loc_16C64:
 		cmpi.b	#$A,obRoutine(a1)
 		bne.s	.display
 
-	if FixBugs
 		; Delete the parent.
 		jsr	(DeleteChild).l ; Don't mind this misnomer.
-	endif
 
 .delete:
 		; Mark self for deletion.
 		move.b	#$A,obRoutine(a0)
 		clr.b	obColType(a1)
 
-	if FixBugs
 		; Do not queue self for display, since it will be deleted by
 		; its child later.
 		rts
-	endif
 
 .display:
 		jmp	(DisplaySprite).l

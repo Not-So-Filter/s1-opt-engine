@@ -126,23 +126,13 @@ SEgg_FindBlocks:
 		or.w	obVelY(a0),d0
 		bne.s	loc_199D0
 
-	if FixBugs
 		lea	(v_lvlobjspace).w,a1
 		moveq	#(v_lvlobjend-v_lvlobjspace)/object_size-1,d0
-	else
-		lea	(v_objspace).w,a1 ; Nonsensical starting point, since dynamic object allocations begin at v_lvlobjspace.
-		moveq	#(v_objend-(v_objspace+object_size*1))/object_size/2-1,d0	; Nonsensical length, it only covers the first half of object RAM.
-	endif
 		moveq	#object_size,d1
 
 SEgg_FindLoop:
-	if ~~FixBugs
-		adda.w	d1,a1		; jump to next object RAM
-	endif
 		cmpi.b	#id_FalseFloor,obID(a1) ; is object a block? (object $83)
-	if FixBugs
 		adda.w	d1,a1		; jump to next object RAM
-	endif
 		dbeq	d0,SEgg_FindLoop ; if not, repeat (max	$3E times)
 
 		bne.s	loc_199D0
