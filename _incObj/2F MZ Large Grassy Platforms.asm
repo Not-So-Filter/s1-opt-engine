@@ -230,7 +230,7 @@ LGrass_ChkDel:
 
 loc_B0C6:
 		out_of_range.w	DeleteObject,lgrass_origX(a0)
-		bra.w	DisplaySprite
+		bra.s	locret_B116
 ; ===========================================================================
 
 LGrass_DelFlames:
