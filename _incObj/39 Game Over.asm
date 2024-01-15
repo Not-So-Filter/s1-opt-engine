@@ -30,7 +30,7 @@ Over_1stWord:
 		move.w	#$F0,obScreenY(a0)
 		move.l	#Map_Over,obMap(a0)
 		move.w	#make_art_tile(ArtTile_Game_Over,0,1),obGfx(a0)
-		move.b	#0,obRender(a0)
+		clr.b	obRender(a0)
 		move.w	#$80*0,obPriority(a0)
 
 Over_Move:	; Routine 2
@@ -75,7 +75,7 @@ Over_ChgMode:
 
 Over_ResetLvl:
 		clr.l	(v_lamp_time).w
-		move.b	#1,(f_restart).w ; restart level
+		st.b	(f_restart).w ; restart level
 
 Over_Display:
 		bra.w	DisplaySprite

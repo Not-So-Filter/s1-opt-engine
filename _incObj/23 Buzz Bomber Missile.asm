@@ -18,6 +18,8 @@ msl_parent = objoff_3C
 ; ===========================================================================
 
 Msl_Main:	; Routine 0
+		subq.b	#1,buzz_timedelay(a0)
+		bpl.s	Msl_ChkCancel
 		addq.b	#2,obRoutine(a0)
 		move.l	#Map_Missile,obMap(a0)
 		move.w	#make_art_tile(ArtTile_Buzz_Bomber,1,0),obGfx(a0)

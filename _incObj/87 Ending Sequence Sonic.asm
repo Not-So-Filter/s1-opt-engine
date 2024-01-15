@@ -51,7 +51,7 @@ ESon_Wait:
 Obj87_LookUp:	; Routine 6
 		cmpi.w	#$2000,((v_endemeralds+echa_radius)&$FFFFFF).l
 		bne.s	locret_5480
-		move.b	#1,(f_restart).w ; set level to	restart	(causes	flash)
+		st.b	(f_restart).w ; set level to	restart	(causes	flash)
 		move.b	#90,eson_time(a0)
 		addq.b	#2,ob2ndRout(a0)
 
@@ -69,7 +69,7 @@ Obj87_ClrObjRam:
 Obj87_ClrLoop:
 		clr.l	(a1)+
 		dbf	d1,Obj87_ClrLoop ; clear the object RAM
-		move.b	#1,(f_restart).w
+		st.b	(f_restart).w
 		addq.b	#2,ob2ndRout(a0)
 		move.b	#1,obAnim(a0)
 		move.b	#60,eson_time(a0)

@@ -45,7 +45,7 @@ Sonic_LevelBound:
 		cmpi.w	#$2000,(v_player+obX).w
 		blo.s	.killsonic
 		clr.b	(v_lastlamp).w	; clear	lamppost counter
-		move.b	#1,(f_restart).w ; restart the level
+		st.b	(f_restart).w ; restart the level
 		move.w	#(id_LZ<<8)+3,(v_zone).w ; set level to SBZ3 (LZ4)
 		rts
                 

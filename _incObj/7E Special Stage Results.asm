@@ -46,7 +46,7 @@ SSR_Loop:
 		move.b	(a2)+,obFrame(a1)
 		move.l	#Map_SSR,obMap(a1)
 		move.w	#make_art_tile(ArtTile_Title_Card,0,1),obGfx(a1)
-		move.b	#0,obRender(a1)
+		clr.b	obRender(a1)
 		lea	object_size(a1),a1
 		dbf	d1,SSR_Loop	; repeat sequence 3 or 4 times
 
@@ -132,7 +132,7 @@ locret_C8EA:
 ; ===========================================================================
 
 SSR_Exit:	; Routine $A, $12
-		move.b	#1,(f_restart).w ; restart level
+		st.b	(f_restart).w ; restart level
 		bra.s	SSR_Display2
 ; ===========================================================================
 
