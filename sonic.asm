@@ -2957,8 +2957,7 @@ SS_ClrNemRam:
 		lea	DemoDataPtr(pc),a1
 		moveq	#6,d0
 		add.w	d0,d0
-		add.w	d0,d0
-		movea.l	(a1,d0.w),a1
+		movea.w	(a1,d0.w),a1
 		move.b	1(a1),(v_btnpushtime2).w
 		subq.b	#1,(v_btnpushtime2).w
 		moveq	#0,d0
