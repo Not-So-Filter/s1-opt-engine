@@ -159,7 +159,7 @@ zVar STRUCT DOTS
 	TempoTurbo:		ds.b 1	; Stores the tempo if speed shoes are acquired (or 7Bh is played otherwise)
 	SpeedUpFlag:		ds.b 1
 	DACEnabled:		ds.b 1
-	MusicBankNumber:	ds.b 1
+;	MusicBankNumber:	ds.b 1
 	IsPalFlag:		ds.b 1	; Flags if the system is a PAL console
 zVar ENDSTRUCT
 
@@ -358,7 +358,7 @@ zWriteFMI:    rsttarget
 	rst	zFMBusyWait
     endif
 	ld	a,c
-	ld	(zYM2612_D0),a      
+	ld	(zYM2612_D0),a
 	ld	a,2Ah			; DAC port
 	ld	(zYM2612_A0),a		; Set DAC port register
 	pop	af
@@ -1677,18 +1677,18 @@ zBGMLoad:
 	ld	a,(hl)				; Get "fixed" index
 	ld	b,a				; 'a' -> 'b'
 	; The following instructions enable a bankswitch routine
-	and	80h				; Get only 'bank' bit
-	ld	(zAbsVar.MusicBankNumber),a	; Store this (use to enable alternate bank)
-	ld	a,b				; Restore 'a'
-	add	a,a				; Adding a+a causes a possible overflow and a multiplication by 2
-	add	a,a				; Now multiplied by 4 and another possible overflow
+;	and	80h				; Get only 'bank' bit
+;	ld	(zAbsVar.MusicBankNumber),a	; Store this (use to enable alternate bank)
+;	ld	a,b				; Restore 'a'
+;	add	a,a				; Adding a+a causes a possible overflow and a multiplication by 2
+	add	a,a				; Now multiplied by 2 and another possible overflow
 	ld	c,a				; Result -> 'c'
 	ccf					; Invert carry flag...
 	sbc	a,a				; ... so that this sets a to FFh if bit 6 of original a was clear (allow PAL double-update), zero otherwise (do not allow PAL double-update)
 	ld	(zAbsVar.IsPalFlag),a		; Set IsPalFlag
 	ld	a,c				; Put prior multiply result back in
-	add	a,a				; Now multiplied by 8!
-	sbc	a,a				; This is FFh if bit 5 of original a was set (uncompressed song), zero otherwise (compressed song)
+;	add	a,a				; Now multiplied by 8!
+;	sbc	a,a				; This is FFh if bit 5 of original a was set (uncompressed song), zero otherwise (compressed song)
 	push	af				; Backing up result...?
 	ld	a,b				; Put 80h based index -> 'a'
 	and	1Fh				; Strip the flag bits
@@ -2720,7 +2720,6 @@ zFMNoteOff:
 	jp	zWriteFMI	; Write to part I (note this particular register is ALWAYS sent to part I)
 ; End of function zFMNoteOff
 
-
 ; ||||||||||||||| S U B R O U T I N E |||||||||||||||||||||||||||||||||||||||
 
 ; Performs a bank switch to where the music for the current track is at
@@ -2728,7 +2727,7 @@ zFMNoteOff:
 
 ; zsub_C63:
 zBankSwitchToMusic:
-	ld	a,(zAbsVar.MusicBankNumber)
+;	ld	a,(zAbsVar.MusicBankNumber)
 ;	or	a
 ;	jr	nz,zSwitchToBank2
 
@@ -3644,33 +3643,31 @@ zPSG_Env9:
 zMasterPlaylist:
 
 ; Music IDs
-; bank         - Which bank that the song is in.
 ; pal          - Whether the song should play slower on PAL consoles.
-; uncompressed - Whether the song data is uncompressed or not.
 ; label        - The location of the song data's pointer.
-music_metadata macro bank,pal,uncompressed,label
-	db	(bank<<7)|(pal<<6)|(uncompressed<<5)|((label-MusicPoint)/2)
+music_metadata macro pal,label
+	db	(pal<<7)|((label-MusicPoint)/2)
     endm
 
-zMusIDPtr_2PResult:	music_metadata 0,0,1,ptr_mus81
-zMusIDPtr_EHZ:		music_metadata 0,0,1,ptr_mus82
-zMusIDPtr_MCZ_2P:	music_metadata 0,0,1,ptr_mus83
-zMusIDPtr_OOZ:		music_metadata 0,0,1,ptr_mus84
-zMusIDPtr_MTZ:		music_metadata 0,0,1,ptr_mus85
-zMusIDPtr_HTZ:		music_metadata 0,0,1,ptr_mus86
-zMusIDPtr_ARZ:		music_metadata 0,0,1,ptr_mus87
-zMusIDPtr_CNZ_2P:	music_metadata 0,0,1,ptr_mus88
-zMusIDPtr_CNZ:		music_metadata 0,0,1,ptr_mus89
-zMusIDPtr_DEZ:		music_metadata 0,0,1,ptr_mus8A
-zMusIDPtr_MCZ:		music_metadata 0,0,1,ptr_mus8B
-zMusIDPtr_EHZ_2P:	music_metadata 0,0,1,ptr_mus8C
-zMusIDPtr_SCZ:		music_metadata 0,0,1,ptr_mus8D
-zMusIDPtr_CPZ:		music_metadata 0,0,1,ptr_mus8E
-zMusIDPtr_WFZ:		music_metadata 0,0,1,ptr_mus8F
-zMusIDPtr_HPZ:		music_metadata 0,0,1,ptr_mus90
-zMusIDPtr_Options:	music_metadata 0,0,1,ptr_mus91
-zMusIDPtr_SpecStage:	music_metadata 0,1,1,ptr_mus92
-zMusIDPtr_Boss:		music_metadata 0,0,1,ptr_mus93
+zMusIDPtr_2PResult:	music_metadata 0,ptr_mus81
+zMusIDPtr_EHZ:		music_metadata 0,ptr_mus82
+zMusIDPtr_MCZ_2P:	music_metadata 0,ptr_mus83
+zMusIDPtr_OOZ:		music_metadata 0,ptr_mus84
+zMusIDPtr_MTZ:		music_metadata 0,ptr_mus85
+zMusIDPtr_HTZ:		music_metadata 0,ptr_mus86
+zMusIDPtr_ARZ:		music_metadata 0,ptr_mus87
+zMusIDPtr_CNZ_2P:	music_metadata 0,ptr_mus88
+zMusIDPtr_CNZ:		music_metadata 0,ptr_mus89
+zMusIDPtr_DEZ:		music_metadata 0,ptr_mus8A
+zMusIDPtr_MCZ:		music_metadata 0,ptr_mus8B
+zMusIDPtr_EHZ_2P:	music_metadata 0,ptr_mus8C
+zMusIDPtr_SCZ:		music_metadata 0,ptr_mus8D
+zMusIDPtr_CPZ:		music_metadata 0,ptr_mus8E
+zMusIDPtr_WFZ:		music_metadata 0,ptr_mus8F
+zMusIDPtr_HPZ:		music_metadata 0,ptr_mus90
+zMusIDPtr_Options:	music_metadata 0,ptr_mus91
+zMusIDPtr_SpecStage:	music_metadata 1,ptr_mus92
+zMusIDPtr_Boss:		music_metadata 0,ptr_mus93
 zMusIDPtr__End:
 
 ; Tempo with speed shoe tempo for each song
